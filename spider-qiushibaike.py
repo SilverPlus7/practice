@@ -24,7 +24,7 @@ class spider:
             response = urllib.request.urlopen(request)
             content = response.read().decode("UTF-8").replace("<br/>","\n")
             #编码转化，转换换行符
-            pattern = re.compile('jpg" />\n(.*?)\n</a>.*?"content">\n\n(.*?)\n<!--(.*?)"number">(.*?)</i> 好笑',re.S)
+            pattern = re.compile('jpg" />\n(.*?)\n</a>.*?"content">\n*(.*?)\n*<!--(.*?)"number">(.*?)\n*</i> 好笑',re.S)
             self.stories = re.findall(pattern,content)
             #正则表达式匹配
             
@@ -33,9 +33,8 @@ class spider:
                 print (u"获取失败，错误原因",e.reason) 
                 #错误信息
                 return None
-
     def start(self):
-        print (u"正在读取糗事百科\n")
+        print ("{:^70}".format('正在读取糗事百科'))
         while True:
             self.get_stories()
             #获取一页段子
@@ -43,12 +42,13 @@ class spider:
                 #遍历段子
                 if not re.search('img',story[2]):
                 #去除带图段子
-                    Input = input("回车查看新段子,Q 键退出程序")
+                    Input = input("{:^70}".format('回车查看新段子,Q 键退出程序\n'))
                     #用户键入
                     if Input == 'Q' or Input == 'q':
-                        print("下次再见")
+                        print ("{:^70}".format('再见'))
                         return
-                    print (u"第%d页 作者:%s 赞数%s\n%s\n" %(self.page-1,story[0],story[3],story[1]))
-            print("翻个页 TwT\n")
+                    print ('{:^70}'.format('第{}页 作者:{} 赞数{}').format(self.page-1,story[0],story[3]))
+                    print ('{}\n'.format(story[1]))
+            print ("{:^70}".format('翻个页 TwT'))
 spider = spider()
 spider.start()        
