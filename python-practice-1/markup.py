@@ -14,6 +14,7 @@ class Parser:
         self.rules.append(rule)
 
     def add_filter(self, pattern, name):
+    # self.add_filter('(\*(.+?)\*','emphasis')
         def filter(block, handler):
             return re.sub(pattern, handler.sub(name), block)
         self.filters.append(filter)
@@ -27,3 +28,21 @@ class Parser:
             if rule.action(block, self.handler):
                 break
         self.handler.end('document')
+
+class basic_text_parser(Parser):
+    Parser.__init__(self, handler)
+    def __init__(self, handler):
+        self.add_rule(list_rule())
+        self.add_rule(listitem_rule())
+        self.add_rule(title_rule())
+        self.add_rule(heading_rule())
+        self.add_rule(paragraph_rule())
+        
+        self.add_filter('(\*(.+?)\*','emphasis')
+        self.add_filter('(http://[\.a-zA-Z/]+)', 'url')
+        self.add_filter('([\.a-zA-Z/]+@[\.a-zA-Z/]+[a-z]+)','mail')
+        
+handler = HTML_renderer()
+parser = basic_text_parser(handler)
+
+parser.parse(sys.stdin)
