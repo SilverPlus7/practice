@@ -45,4 +45,4 @@ class ListRule(ListItemRule):
 class ParagraphRule(Rule):
     type = 'paragraph'
     def condition(self, block):
-        return Ture
+        return True

@@ -7,15 +7,18 @@ class Handler:
         self.callback('start_', name)
     
     def end(self, name):
-        self.callback('end_',name)
+        self.callback('end_', name)
     
     def sub(self, name):
         def substitution(match):
-            return self.callback('sub_'.name, match)
+            result = self.callback('sub_', name, match)
+            if result is None: result = match.group(0)
+            return result
         return substitution
 
+class HTMLRenderer(Handler):
     def start_document(self):
-        print ('<html><head><title>...</title></head><body>')
+        print ('<html><head><title>hzwer</title></head><body>')
     def end_document(self):
         print ('</body></html>')
 
@@ -44,11 +47,11 @@ class Handler:
     def end_listitem(self):
         print ('</li>')
 
-    def sub_emhasis(self, match):
+    def sub_emphasis(self, match):
         return '<em>%s</em>' % match.group(1)
     def sub_url(self, match):
         return '<a href="%s">%s</a>' % (match.group(1), match.group(1))
     def sub_mail(self, match):
         return '<a href="mailto:%s">%s</a>' % (match.group(1), match.group(1))
-    def sub_feed(self, data):
-        return data
+    def feed(self, data):
+        print (data)
