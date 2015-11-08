@@ -2,7 +2,7 @@ __author__ = 'hzwer'
 # -*- coding: utf-8 -*-  
 
 import re
-import urllib.request
+from urllib.request import *
 
 class Spider:
     def __init__(self):
@@ -17,20 +17,20 @@ class Spider:
     def get_stories(self):
         try:
             url = 'http://www.qiushibaike.com/hot/page/' + str(self.page)
-            request = urllib.request.Request(url,headers = self.headers)
+            request = Request(url, headers = self.headers)
             # 构建request
             self.page += 1
             # 翻页
-            response = urllib.request.urlopen(request)
-            content = response.read().decode("UTF-8").replace("<br/>","\n")
-            # 编码转化，转换换行符
-            pattern = re.compile('jpg" />\n(.*?)\n</a>.*?"content">\n*(.*?)\n*<!--(.*?)"number">(.*?)\n*</i> 好笑',re.S)
-            self.stories = re.findall(pattern,content)
+            response = urlopen(request)
+            content = response.read().decode("UTF-8").replace("<br/>", "\n")
+            pattern = re.compile('alt="(.*?)".*?"content">\n(.*?)<!--(.*?)"number">(.*?)</i> 好笑', re.S)
+            # 作者， 可能存在的图片信息， 内容， 赞数
+            self.stories = re.findall(pattern, content)
             # 正则表达式匹配
             
-        except urllib.request.URLError as e:
-            if hasattr(e,"reason"):
-                print (u"获取失败，错误原因",e.reason) 
+        except URLError as e:
+            if hasattr(e, "reason"):
+                print ("获取失败，错误原因", e.reason) 
                 # 错误信息
                 return None
     def start(self):
@@ -40,15 +40,15 @@ class Spider:
             # 获取一页段子
             for story in self.stories:
                 # 遍历段子
-                if not re.search('img',story[2]):
+                if not re.search('img', story[2]):
                 # 去除带图段子
-                    Input = input("{:^70}".format('回车查看新段子,Q 键退出程序\n'))
+                    Input = input("{:^70}".format('回车查看新段子, Q 键退出程序\n'))
                     # 用户键入
                     if Input is 'Q' or Input is 'q':
                         print ("{:^70}".format('再见'))
                         return
-                    print ('{:^70}'.format('第{}页 作者:{} 赞数{}').format(self.page-1,story[0],story[3]))
+                    print ('{:^70}'.format('第{}页 作者:{} 赞数{}').format(self.page-1, story[0], story[3]))
                     print ('{}\n'.format(story[1]))
             print ("{:^70}".format('翻个页 TwT'))
 spider = Spider()
-spider.start()       
+spider.start()
