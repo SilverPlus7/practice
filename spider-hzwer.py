@@ -25,7 +25,7 @@ for i in range(1, 8000):
         pattern = re.compile('-webkit-tab-size:4; tab-size:4; font-size: 15px !important; line-height: 16px !important;">\n(.*?)</textarea>', re.S)
         code = re.findall(pattern, content)
         if(code):
-            length = len(code[0].splitlines())
+            length = len(code[-1].splitlines())
             print('url: {} {}行代码'.format(url, length))
             tot += length
             page = page + 1
