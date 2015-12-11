@@ -6,7 +6,7 @@ words = []
 def check():
     while True:
         try:
-            word = str(raw_input())
+            word = str(input())
         except:
             break
         if word in words:
