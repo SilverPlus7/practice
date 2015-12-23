@@ -12,18 +12,19 @@ def check(link):
             return False
     return True
 
-url = 'http://hzwer.com'
-target = 'http://hzwer.com/'
+url = input('url: ')
+target = url + '/'
 
 request = Request(target)
 respond = urlopen(request)
 content = respond.read().decode("UTF-8")
 
-pattern = re.compile('href="(.*?)"',re.S)
+pattern = re.compile('href="(.*?)"', re.S)
 res = re.findall(pattern, content)
 
 for link in res:
-    if link[0] == '/':
-        link = url + link
-    if check(link):
-        print(link)
+    if link:
+        if link[0] == '/':
+            link = url + link
+        if check(link):
+            print(link)
